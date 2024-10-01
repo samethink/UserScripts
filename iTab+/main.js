@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         iTab新标签页+增强
 // @namespace    https://greasyfork.org/zh-CN/users/1267923-samethink
-// @version      1.5.1
+// @version      1.5.2
 // @description  加入更多快捷键及易用特性，方便快速打开应用及自由在分组间切换
 // @author       samethink
 // @match        https://go.itab.link/
@@ -121,7 +121,7 @@
         } else if (Settings.LR_NAVIGATION.enabled && event.key === 'ArrowRight') {
             updateVariablesOfApp();
             highlightAppIcon((groupFocusedAppIndices[groupIndexWhichIsActive] + 1) % appElements.length);
-        } else if (Settings.LR_NAVIGATION.enabled && (event.key === ' ' || event.key === 'Enter')) {
+        } else if (Settings.LR_NAVIGATION.enabled && (event.key === ' ' || event.key === 'Enter') && !isSubWindowOpen()) {
             event.preventDefault();
             appElements[groupFocusedAppIndices[groupIndexWhichIsActive]]?.firstChild.click();
         }
@@ -135,16 +135,31 @@
 
     // 更新分组有关变量
     function updateVariablesOfGroup() {
+        let oldGroupCount = groupElements.length;
         groupElements = document.querySelectorAll('.app-sidebar-ul > .app-group-item');
         groupIndexWhichIsActive = Array.prototype.findIndex.call(groupElements, (element) => {
             return element.classList.contains('active');
         });
-        if (groupFocusedAppIndices.length === 0) groupFocusedAppIndices = new Array(groupElements.length).fill(-1);
+        if (groupFocusedAppIndices.length === 0) {
+            groupFocusedAppIndices = new Array(groupElements.length).fill(-1);
+        } else if (groupElements.length < oldGroupCount) {
+            groupFocusedAppIndices.pop();
+        } else if (groupElements.length > oldGroupCount) {
+            groupFocusedAppIndices.push(-1);
+        }
     }
 
-    // 监控侧边栏
+    // 检查是否打开了子窗口
+    function isSubWindowOpen() {
+        for (let element of document.querySelectorAll(".d-dialog-model")) {
+            if (element.checkVisibility()) return true;
+        }
+        return false;
+    }
+
     let SidebarObserver = null;
 
+    // 监控侧边栏
     function observeSidebar() {
         if (SidebarObserver instanceof MutationObserver) SidebarObserver.disconnect();  // 解除原先的监控
         const targetNode = document.querySelector('.app-sidebar-ul');
@@ -159,8 +174,9 @@
                     updateVariablesOfApp();
                     appElements[groupFocusedAppIndices[groupIndexWhichIsActive]]?.removeAttribute('hidden');
                 } else if (mutation.addedNodes.length !== mutation.removedNodes.length) {
-                    document.querySelectorAll(".app-item").forEach((item) => {
-                        item?.removeAttribute("hidden");
+                    document.querySelectorAll(".app-item").forEach((element) => {
+                        element?.removeAttribute("hidden");
+                        element?.removeAttribute("style");
                     });
                 }
             }
