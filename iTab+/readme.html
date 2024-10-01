@@ -1,0 +1,122 @@
+<div class="container">
+    <h1>快捷键说明</h1>
+    <div class="shortcut-section">
+        <h2>一般</h2>
+        <ul class="shortcut-list">
+            <li><span>切换简洁模式</span><span class="shortcut-key">Alt + [`~]</span></li>
+            <li><span>激活搜索框</span><span class="shortcut-key">Alt + [/?]</span></li>
+            <li><span>清空搜索框</span><span class="shortcut-key">Alt + Backspace</span></li>
+        </ul>
+    </div>
+    <div class="shortcut-section">
+        <h2>应用</h2>
+        <ul class="shortcut-list">
+            <li><span>打开应用</span><span class="shortcut-key">Alt + 数字/字母</span></li>
+            <li><span>打开最后一个应用</span><span class="shortcut-key">Alt + [0)]</span></li>
+            <li><span>删除应用</span><span class="shortcut-key">Alt + [-_]</span></li>
+            <li><span>添加应用</span><span class="shortcut-key">Alt + [=+]</span></li>
+            <li><span>应用正向排序</span><span class="shortcut-key">Alt + [,&lt;]</span></li>
+            <li><span>应用反向排序</span><span class="shortcut-key">Alt + [.&gt;]</span></li>
+            <li><span>切换焦点应用（开启左右导航）</span><span class="shortcut-key">方向键左/方向键右</span></li>
+            <li><span>打开焦点应用（存在焦点应用情况下）</span><span class="shortcut-key">Space/Enter</span></li>
+        </ul>
+    </div>
+    <div class="shortcut-section">
+        <h2>分组</h2>
+        <ul class="shortcut-list">
+            <li><span>跳转分组</span><span class="shortcut-key">Alt + Shift + 数字/字母</span></li>
+            <li><span>跳转最后一个分组</span><span class="shortcut-key">Alt + Shift + [0)]</span></li>
+            <li><span>添加分组</span><span class="shortcut-key">Alt + Shift + [=+]</span></li>
+            <li><span>分组正向排序</span><span class="shortcut-key">Alt + Shift + [,&lt;]</span></li>
+            <li><span>分组反向排序</span><span class="shortcut-key">Alt + Shift + [.&gt;]</span></li>
+            <li><span>切换分组</span><span class="shortcut-key">方向键上/方向键下</span></li>
+        </ul>
+    </div>
+    <button class="close-btn" id="close-btn">×</button>
+</div>
+<style>
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .container {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        max-width: 450px;
+        max-height: 80vh;
+        width: 90%;
+        position: relative;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        color: #333;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 16px;
+        color: #222;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        font-size: 14px;
+        color: #222;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+
+    .shortcut-section {
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    .shortcut-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .shortcut-list li {
+        padding: 6px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        color: #555;
+    }
+
+    .shortcut-list li:last-child {
+        border-bottom: none;
+    }
+
+    .shortcut-key {
+        background-color: #e1e1e1;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Courier New', Courier, monospace;
+        color: #008cff;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #333;
+    }
+</style>
