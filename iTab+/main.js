@@ -151,7 +151,7 @@
 
     // 检查是否打开了子窗口
     function isSubWindowOpen() {
-        for (let element of document.querySelectorAll(".d-dialog-model")) {
+        for (let element of document.querySelectorAll(".el-overlay-dialog")) {
             if (element.checkVisibility()) return true;
         }
         return false;
