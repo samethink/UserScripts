@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         iTab新标签页+增强
 // @namespace    https://greasyfork.org/zh-CN/users/1267923-samethink
-// @version      1.6.1
-// @description  加入更多快捷键及易用特性，方便快速打开应用及自由在分组间切换
+// @version      1.7
+// @description  优化iTab使用体验，增加快捷键及便利功能，自带说明及菜单
 // @author       samethink
 // @match        https://go.itab.link/
 // @icon         https://go.itab.link/favicon.ico
@@ -18,7 +18,10 @@
 (function () {
   'use strict'
 
-  // 配置选项
+  // 变量配置
+  const HIDE_APP_TIMEOUT_SECS = 10
+
+  // 菜单配置
   const DEFAULT_SETTINGS = {
     SHOW_HINTS: { name: '启用提示', enabled: true, reload: false },
     USE_LETTERS: { name: '启用字母键', enabled: true, reload: false },
@@ -313,17 +316,15 @@
     }
 
     static autoHideApp () {
-      const TIMEOUT_SECS = 10
-
       if (!Settings.AUTO_CONCISE_MODE.enabled) return
-      document.addEventListener('wheel', throttle(resetTimer, 1024))
-      document.addEventListener('keydown', throttle(resetTimer, 2048))
-      document.addEventListener('mousedown', throttle(resetTimer, 3072))
-      document.addEventListener('mousemove', throttle(resetTimer, 4096))
+      document.addEventListener('wheel', throttle(resetTimer, 1000))
+      document.addEventListener('keydown', throttle(resetTimer, 1000))
+      document.addEventListener('mousedown', throttle(resetTimer, 1000))
+      document.addEventListener('mousemove', throttle(resetTimer, 1000))
       let timer
 
       function startTimer () {
-        timer = setTimeout(() => toggleConciseMode(true), TIMEOUT_SECS * 1000)
+        timer = setTimeout(() => toggleConciseMode(true), HIDE_APP_TIMEOUT_SECS * 1000)
       }
 
       function resetTimer (event) {

@@ -33,5 +33,5 @@
 | 分组反向排序         |  `Alt + Shift + [.>]` |
 | 切换分组           |           `方向键上/方向键下` |
 
-![img1](https://raw.githubusercontent.com/samethink/UserScripts/refs/heads/main/iTab%2B/img/1.jpeg)
-![img2](https://raw.githubusercontent.com/samethink/UserScripts/refs/heads/main/iTab%2B/img/2.jpeg)
+![img1](https://gitlab.com/methink/UserScripts/-/raw/main/iTab+/img/1.jpeg)
+![img2](https://gitlab.com/methink/UserScripts/-/raw/main/iTab+/img/2.jpeg)
