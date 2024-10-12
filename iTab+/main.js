@@ -287,7 +287,7 @@
   // 自动操作
   class AutoSetup {
     static batRun () {
-      const methods = [this.autoHideApp, this.autoReObserve, this.autoClick, this.autoHighlightApp]
+      const methods = [this.autoReObserve, this.autoHideApp, this.autoClick, this.autoHighlightApp]
       methods.forEach((method, i) => setTimeout(method, i * 1000))
     }
 
