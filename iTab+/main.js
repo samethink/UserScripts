@@ -24,7 +24,7 @@
   // 菜单配置
   const DEFAULT_SETTINGS = {
     SHOW_HINTS: { name: '启用提示', enabled: true, reload: false },
-    USE_LETTERS: { name: '启用字母键', enabled: true, reload: false },
+    USE_LETTERS: { name: '启用字母键', enabled: false, reload: false },
     SORTING: { name: '启用排序', enabled: true, reload: false },
     APP_NAVIGATION: { name: '启用应用导航', enabled: true, reload: true },
     AUTO_CONCISE_MODE: { name: '自动简洁模式', enabled: true, reload: true }
