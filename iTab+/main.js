@@ -52,8 +52,8 @@
       updateVariablesOfGroup()
       updateVariablesOfApp()
       observeSidebar()
-      AutoSetup.batRun()
     }, 1000)
+    AutoSetup.batRun()
 
     document.addEventListener('keydown', handleKeyDown)
     document.addEventListener('keyup', handleKeyUp)
