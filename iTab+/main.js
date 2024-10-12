@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         iTab新标签页+增强
 // @namespace    https://greasyfork.org/zh-CN/users/1267923-samethink
-// @version      1.6
+// @version      1.6.1
 // @description  加入更多快捷键及易用特性，方便快速打开应用及自由在分组间切换
 // @author       samethink
 // @match        https://go.itab.link/
@@ -97,13 +97,13 @@
     }
   }
 
-  // 更新应用有关变量
+  // 更新应用变量
   function updateVariablesOfApp () {
     const temp = document.querySelectorAll('.app-icon-item')[groupIndexWhichIsActive]
     appElements = temp ? Array.from(temp.querySelectorAll('.app-item')) : []
   }
 
-  // 更新分组有关变量
+  // 更新分组变量
   function updateVariablesOfGroup () {
     const oldGroupCount = groupElements.length
     groupElements = Array.from(document.querySelectorAll('.app-sidebar-ul > .app-group-item'))
@@ -171,6 +171,7 @@
 
   // 点击并滚动到目标元素
   function clickAndScrollTo (element) {
+    if (!element) return
     element.click()
     element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
@@ -179,7 +180,7 @@
   function highlightAppIcon (index) {
     appElements[groupFocusedAppIndices[groupIndexWhichIsActive]]?.removeAttribute('style')
     groupFocusedAppIndices[groupIndexWhichIsActive] = index
-    appElements[index].setAttribute('style', 'box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.8), 0 0 8px 4px rgba(255, 255, 255, 0.8)')
+    appElements[index]?.setAttribute('style', 'box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.8), 0 0 8px 4px rgba(255, 255, 255, 0.8)')
   }
 
   // 检查是否打开了子窗口
@@ -280,17 +281,11 @@
     }
   }
 
-  // 自动操作的方法
+  // 自动操作
   class AutoSetup {
     static batRun () {
-      const methods = [this.autoClick, this.autoReObserve, this.autoHighlightApp, this.autoHideApp]
-      for (const method of methods) {
-        try {
-          method()
-        } catch (error) {
-          console.error(error)
-        }
-      }
+      const methods = [this.autoHideApp, this.autoReObserve, this.autoClick, this.autoHighlightApp]
+      methods.forEach((method, i) => setTimeout(method, i * 1000))
     }
 
     static autoClick () {
@@ -311,14 +306,14 @@
 
     static autoHighlightApp () {
       if (!Settings.APP_NAVIGATION.enabled) return
-      document.querySelector('.app-icon-wrap')?.addEventListener('click', (event) => {
+      document.querySelector('.app-icon-grid-wrap')?.addEventListener('click', (event) => {
         const appIcon = event.target.closest('.app-item')
         if (appIcon) highlightAppIcon(appElements.indexOf(appIcon))
       })
     }
 
     static autoHideApp () {
-      const TIMEOUT = 10
+      const TIMEOUT_SECS = 10
 
       if (!Settings.AUTO_CONCISE_MODE.enabled) return
       document.addEventListener('wheel', throttle(resetTimer, 1024))
@@ -328,19 +323,20 @@
       let timer
 
       function startTimer () {
-        timer = setTimeout(() => toggleConciseMode(false), TIMEOUT * 1000)
+        timer = setTimeout(() => toggleConciseMode(true), TIMEOUT_SECS * 1000)
       }
 
       function resetTimer (event) {
         clearTimeout(timer)
         if (event.type === 'keydown' && ![16, 18, 37, 38, 39, 40].includes(event.keyCode)) return
-        toggleConciseMode(true)
+        toggleConciseMode(false)
+        updateVariablesOfApp()
         startTimer()
       }
 
       function toggleConciseMode (flag) {
         const app = document.querySelector('.app-icon-grid')
-        if (flag !== Boolean(app)) document.querySelector('#app-main > itab-date').shadowRoot.querySelector('.app-time').click()
+        if (flag === Boolean(app)) document.querySelector('#app-main > itab-date').shadowRoot.querySelector('.app-time').click()
       }
 
       function throttle (func, limit) {
