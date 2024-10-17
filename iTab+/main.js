@@ -67,7 +67,7 @@
   function handleKeyDown (event) {
     if (event.altKey && !event.ctrlKey) {
       handleShortcuts(event)
-    } else {
+    } else if (!isSubWindowOpen()) {
       handleNavigation(event)
     }
   }
@@ -166,7 +166,7 @@
     } else if (Settings.APP_NAVIGATION.enabled && event.key === 'ArrowRight') {
       updateVariablesOfApp()
       highlightAppIcon((groupFocusedAppIndices[groupIndexWhichIsActive] + 1) % appElements.length)
-    } else if (Settings.APP_NAVIGATION.enabled && (event.key === ' ' || event.key === 'Enter') && !isSubWindowOpen()) {
+    } else if (Settings.APP_NAVIGATION.enabled && (event.key === ' ' || event.key === 'Enter')) {
       event.preventDefault()
       appElements[groupFocusedAppIndices[groupIndexWhichIsActive]]?.firstChild.click()
     }
@@ -336,6 +336,7 @@
       }
 
       function toggleConciseMode (flag) {
+        if (isSubWindowOpen()) return
         const app = document.querySelector('.app-icon-grid')
         if (flag === Boolean(app)) document.querySelector('#app-main > itab-date').shadowRoot.querySelector('.app-time').click()
       }
