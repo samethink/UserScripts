@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         iTab新标签页+增强
 // @namespace    https://greasyfork.org/zh-CN/users/1267923-samethink
-// @version      1.7
+// @version      1.7.1
 // @description  优化iTab使用体验，增加快捷键及便利功能，自带说明及菜单
 // @author       samethink
 // @match        https://go.itab.link/
@@ -67,7 +67,7 @@
   function handleKeyDown (event) {
     if (event.altKey && !event.ctrlKey) {
       handleShortcuts(event)
-    } else {
+    } else if (!isSubWindowOpen()) {
       handleNavigation(event)
     }
   }
@@ -166,7 +166,7 @@
     } else if (Settings.APP_NAVIGATION.enabled && event.key === 'ArrowRight') {
       updateVariablesOfApp()
       highlightAppIcon((groupFocusedAppIndices[groupIndexWhichIsActive] + 1) % appElements.length)
-    } else if (Settings.APP_NAVIGATION.enabled && (event.key === ' ' || event.key === 'Enter') && !isSubWindowOpen()) {
+    } else if (Settings.APP_NAVIGATION.enabled && (event.key === ' ' || event.key === 'Enter')) {
       event.preventDefault()
       appElements[groupFocusedAppIndices[groupIndexWhichIsActive]]?.firstChild.click()
     }
@@ -336,6 +336,7 @@
       }
 
       function toggleConciseMode (flag) {
+        if (isSubWindowOpen()) return
         const app = document.querySelector('.app-icon-grid')
         if (flag === Boolean(app)) document.querySelector('#app-main > itab-date').shadowRoot.querySelector('.app-time').click()
       }
